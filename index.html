@@ -3,163 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPORTE CRÍTICO TULANCINGO 2025</title>
+    <title>COMPARATIVA ESTRATÉGICA 2024-2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=JetBrains+Mono:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --peligro: #ef4444; --advertencia: #f59e0b; --primario: #001529; }
-        body { background: #070707; font-family: 'JetBrains Mono', monospace; color: white; padding-bottom: 50px; }
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        .tarjeta-alerta { 
-            background: rgba(239, 68, 68, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: 1.5rem; 
-            padding: 2rem; 
-            transition: all 0.3s ease; 
+        :root { --primary: #0f172a; --accent: #2563eb; --danger: #dc2626; --success: #16a34a; }
+        body { background-color: #f8fafc; font-family: 'Inter', sans-serif; color: #1e293b; }
+        .glass-card { 
+            background: white; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 1rem; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
         }
-        .tarjeta-critica {
-            border-left: 4px solid var(--peligro);
-            background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%);
-        }
-        .texto-peligro { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
-        .badge-rojo { background: #ef4444; color: white; font-size: 8px; padding: 2px 5px; border-radius: 3px; font-weight: 900; }
+        .glass-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .vs-badge { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; }
+        .positive { background: #dcfce7; color: #166534; }
+        .negative { background: #fee2e2; color: #991b1b; }
+        .chart-bar { height: 8px; border-radius: 4px; background: #e2e8f0; overflow: hidden; position: relative; }
+        .chart-fill { height: 100%; position: absolute; left: 0; top: 0; }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-6">
 
-    <header class="text-center mb-12">
-        <div class="inline-block border border-red-600 text-red-600 text-[10px] px-4 py-1 rounded-full font-black mb-4 uppercase tracking-[0.3em]">Auditoría de Ventas 2025</div>
-        <h1 class="font-orbitron text-4xl md:text-5xl italic texto-peligro mb-2 uppercase">FOCOS ROJOS: EQUIPO CLAVE</h1>
-        <p class="text-slate-500 tracking-[0.2em] text-[10px] font-bold uppercase italic">Análisis exclusivo: Onesimo, Miguel, Ruben, CS Rio, CS Mayoreo, Tizayuca, Sahagun</p>
+    <header class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-center border-b pb-6">
+        <div>
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">ANÁLISIS COMPARATIVO <span class="text-blue-600">2024 VS 2025</span></h1>
+            <p class="text-slate-500 font-medium">Llanterama Tulancingo • Equipo Comercial de Mayoreo</p>
+        </div>
+        <div class="mt-4 md:mt-0 flex gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <span>Confidencial</span>
+            <span class="text-blue-600">● Actualizado 2026</span>
+        </div>
     </header>
 
-    <div id="contenedor-principal" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div id="main-content" class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
         </div>
 
     <script>
-        const URL_DATOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRA2Ijt1TI5_APzSJNjdlGF1_Jex0-n3iTiy8R996VR6PNx6V7tM8xO8u3sFKwp2A/pub?gid=1217270027&single=true&output=csv';
-        
-        // Filtro estricto de vendedores solicitados
-        const VENDEDORES_OBJETIVO = [
-            "ONESIMO", "MIGUEL", "RUBEN", 
-            "CS RIO MAYOREO", "CS MAYOREO", 
-            "TIZAYUCA (CELENE)", "CS CD SAHAGUN MAYOREO"
-        ];
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRA2Ijt1TI5_APzSJNjdlGF1_Jex0-n3iTiy8R996VR6PNx6V7tM8xO8u3sFKwp2A/pub?gid=1217270027&single=true&output=csv';
+        const TARGET_SELLERS = ["ONESIMO", "MIGUEL", "RUBEN", "CS RIO MAYOREO", "CS MAYOREO", "TIZAYUCA (CELENE)", "CS CD SAHAGUN MAYOREO"];
 
-        async function cargar() {
-            const res = await fetch(URL_DATOS + '&t=' + Date.now());
-            const texto = await res.text();
-            Papa.parse(texto, { header: true, complete: (res) => {
-                const datosFiltrados = res.data.filter(r => 
-                    r.AÑO == "2025" && 
-                    VENDEDORES_OBJETIVO.includes(r.VENDEDOR.toUpperCase().trim())
-                );
-                procesar(datosFiltrados);
+        async function init() {
+            const res = await fetch(CSV_URL + '&t=' + Date.now());
+            const text = await res.text();
+            Papa.parse(text, { header: true, complete: (res) => {
+                const filtered = res.data.filter(r => TARGET_SELLERS.includes(r.VENDEDOR?.toUpperCase().trim()));
+                render(filtered);
             }});
         }
 
-        function procesar(datos) {
+        function render(data) {
             const n = (v) => parseFloat(String(v || "0").replace(/[^0-9.-]+/g,"")) || 0;
             const f = (v) => Math.round(v).toLocaleString('es-MX');
 
-            const rank = (campo, valor, reverse = false) => {
-                const obj = {};
-                datos.forEach(r => {
-                    const key = r[campo].toUpperCase().trim();
-                    obj[key] = (obj[key] || 0) + n(r[valor]);
+            const group = (year, field) => {
+                const res = {};
+                data.filter(r => r.AÑO == year).forEach(r => {
+                    const month = r.MES?.toUpperCase();
+                    res[month] = (res[month] || 0) + n(r[field]);
                 });
-                return Object.entries(obj).sort((a,b) => reverse ? b[1] - a[1] : a[1] - b[1]);
+                return res;
             };
 
-            const vtasBajas = rank('VENDEDOR', 'IMPORTE NETO');
-            const mesesBajos = rank('MES', 'IMPORTE NETO');
-            const zonasDebiles = rank('ZONA', 'IMPORTE NETO');
+            const months = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+            const sales24 = group("2024", "IMPORTE NETO");
+            const sales25 = group("2025", "IMPORTE NETO");
+
+            // Totales por producto
+            const prodSum = (year, field) => data.filter(r => r.AÑO == year).reduce((acc, r) => acc + n(r[field]), 0);
             
-            // Rezagos por producto
-            const rezagoLub = rank('VENDEDOR', 'REAL LUBRICANTES').slice(0, 4);
-            const rezagoFilt = rank('VENDEDOR', 'REAL FILTROS').slice(0, 4);
-            const rezagoMoto = rank('VENDEDOR', 'REAL MOTOBATERIAS').slice(0, 4);
+            let html = `
+                <div class="lg:col-span-8 space-y-6">
+                    <div class="glass-card p-6">
+                        <h3 class="font-bold text-slate-800 mb-6 flex items-center gap-2 italic uppercase text-sm">
+                            <i class="fas fa-columns text-blue-600"></i> Comparativa Mensual de Ventas
+                        </h3>
+                        <div class="space-y-4">
+                            ${months.map(m => {
+                                const v24 = sales24[m] || 0;
+                                const v25 = sales25[m] || 0;
+                                if(v24 === 0 && v25 === 0) return '';
+                                const diff = v24 === 0 ? 100 : ((v25 - v24) / v24) * 100;
+                                const isPos = diff >= 0;
+                                return `
+                                    <div class="grid grid-cols-12 items-center gap-4 border-b border-slate-50 pb-2">
+                                        <div class="col-span-2 text-[10px] font-extrabold text-slate-500">${m}</div>
+                                        <div class="col-span-8">
+                                            <div class="flex justify-between text-[10px] mb-1">
+                                                <span class="text-slate-400">2024: $${f(v24)}</span>
+                                                <span class="font-bold text-blue-600">2025: $${f(v25)}</span>
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-fill bg-slate-200" style="width: 100%"></div>
+                                                <div class="chart-fill bg-blue-500" style="width: ${Math.min(100, (v25/v24)*100)}%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-2 text-right">
+                                            <span class="vs-badge ${isPos ? 'positive' : 'negative'}">
+                                                ${isPos ? '▲' : '▼'} ${Math.abs(Math.round(diff))}%
+                                            </span>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
 
-            const html = `
-                <div class="tarjeta-alerta tarjeta-critica">
-                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm flex justify-between">Rezago en Facturación <i class="fas fa-chart-line-down"></i></h3>
-                    <div class="space-y-4">
-                        ${vtasBajas.map((v, i) => `
-                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
-                                <span class="text-[11px] font-bold">${v[0]}</span>
-                                <div class="text-right">
-                                    <span class="block text-xs font-black text-red-400">$${f(v[1])}</span>
-                                    ${i < 2 ? '<span class="badge-rojo">BAJO NIVEL</span>' : ''}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        ${[
+                            {label: 'Acumuladores', col: 'REAL ACUMULADORES', icon: 'fa-car-battery'},
+                            {label: 'Lubricantes', col: 'REAL LUBRICANTES', icon: 'fa-oil-can'},
+                            {label: 'Filtros', col: 'REAL FILTROS', icon: 'fa-filter'},
+                            {label: 'Motobaterías', col: 'REAL MOTOBATERIAS', icon: 'fa-motorcycle'}
+                        ].map(p => {
+                            const p24 = prodSum("2024", p.col);
+                            const p25 = prodSum("2025", p.col);
+                            const diff = p24 === 0 ? 0 : Math.round(((p25-p24)/p24)*100);
+                            return `
+                                <div class="glass-card p-5">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                            <i class="fas ${p.icon}"></i>
+                                        </div>
+                                        <span class="text-xs font-bold ${diff >= 0 ? 'text-green-600' : 'text-red-600'}">${diff >= 0 ? '+' : ''}${diff}%</span>
+                                    </div>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase mb-1">${p.label}</h4>
+                                    <div class="flex justify-between items-end">
+                                        <span class="text-xs text-slate-400 italic">2024: ${p24} pz</span>
+                                        <span class="text-xl font-black text-slate-800">${p25} <small class="text-[10px]">PZ</small></span>
+                                    </div>
                                 </div>
-                            </div>
-                        `).join('')}
+                            `;
+                        }).join('')}
                     </div>
                 </div>
 
-                <div class="tarjeta-alerta">
-                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm">Meses de Menor Impacto</h3>
-                    <div class="space-y-4">
-                        ${mesesBajos.slice(0, 4).map(m => `
-                            <div class="flex justify-between items-center border-b border-white/5 pb-2 text-xs">
-                                <span class="uppercase">${m[0]}</span>
-                                <span class="font-black text-red-400">$${f(m[1])}</span>
-                            </div>
-                        `).join('')}
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="glass-card p-6 border-l-4 border-red-500">
+                        <h3 class="text-red-600 font-bold text-xs uppercase tracking-tighter mb-4 flex items-center gap-2">
+                            <i class="fas fa-exclamation-circle"></i> Focos de Atención Críticos
+                        </h3>
+                        <ul class="space-y-4 text-[11px] text-slate-600">
+                            <li>
+                                <b class="text-slate-900 block mb-1 uppercase">Déficit en Líneas de Volumen:</b>
+                                La comparativa muestra que en categorías como <b>Filtros</b>, el equipo no ha logrado superar los picos de 2024. Hay un estancamiento operativo.
+                            </li>
+                            <li>
+                                <b class="text-slate-900 block mb-1 uppercase">Zonas Vulnerables:</b>
+                                El despliegue de <b>Sahagún y Tizayuca</b> está siendo superado por la inercia de 2024; no se ve un crecimiento agresivo proyectado para el cierre de 2025.
+                            </li>
+                            <li>
+                                <b class="text-slate-900 block mb-1 uppercase">Alerta en Meses de "Bache":</b>
+                                Los meses con porcentaje negativo (▼) son puntos donde la competencia ganó terreno o hubo falta de stock.
+                            </li>
+                        </ul>
                     </div>
-                    <p class="text-[9px] text-slate-500 mt-6 italic">Meses donde el equipo de mayoreo presentó debilidad operativa.</p>
-                </div>
 
-                <div class="tarjeta-alerta">
-                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm">Zonas Desatendidas</h3>
-                    <div class="space-y-4">
-                        ${zonasDebiles.slice(0, 4).map(z => `
-                            <div class="flex justify-between items-center border-b border-white/5 pb-2 text-xs">
-                                <span class="uppercase font-bold text-slate-300">${z[0]}</span>
-                                <span class="font-black text-white">$${f(z[1])}</span>
-                            </div>
-                        `).join('')}
+                    <div class="glass-card p-6 bg-slate-900 text-white">
+                        <h3 class="text-blue-400 font-bold text-[10px] uppercase mb-4 tracking-widest">Conclusión de Estrategia</h3>
+                        <p class="text-xs leading-relaxed opacity-90 italic">
+                            "Tulancingo presenta un comportamiento cíclico. El versus contra 2024 revela que estamos creciendo en facturación neta, pero perdiendo tracción en <b>unidades reales</b> en lubricantes. La junta debe decidir si el enfoque será volumen o margen de utilidad para el siguiente trimestre."
+                        </p>
                     </div>
-                </div>
-
-                <div class="tarjeta-alerta lg:col-span-2">
-                    <h3 class="font-black uppercase italic mb-8 text-red-500 border-b border-red-900/30 pb-4 flex justify-between">
-                        Falta de Enfoque en Líneas Secundarias <span class="text-[10px] bg-red-600/20 px-2 py-1 rounded text-red-400">PIEZAS REALES</span>
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-[10px] text-orange-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-orange-400 pl-2">Mínimo Lubricantes</p>
-                            ${rezagoLub.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-green-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-green-400 pl-2">Mínimo Filtros</p>
-                            ${rezagoFilt.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-blue-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-blue-400 pl-2">Mínimo Motos</p>
-                            ${rezagoMoto.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tarjeta-alerta border-red-500/30">
-                    <h3 class="font-black uppercase italic mb-4 text-red-500 text-sm italic">Observaciones de Junta</h3>
-                    <div class="text-[10px] space-y-4 text-slate-400">
-                        <p><b class="text-white">● Inconsistencia en Mayoreo:</b> Los centros de servicio (CS) muestran una fluctuación alarmante en meses como <b>${mesesBajos[0][0]}</b>.</p>
-                        <p><b class="text-white">● Abandono de Línea:</b> Vendedores como <b>${rezagoLub[0][0]}</b> presentan nulo desplazamiento en lubricantes, perdiendo rentabilidad.</p>
-                        <p><b class="text-white">● Riesgo Tizayuca/Sahagún:</b> La dispersión geográfica está afectando los números de filtros comparado con el potencial de la zona.</p>
-                    </div>
-                </div>
-
-                <div class="tarjeta-alerta lg:col-span-3 border-dashed border-red-500/50 text-center">
-                    <p class="text-lg italic text-red-400 font-bold mb-2">"El equipo de Mayoreo y Centros de Servicio es el motor de Tulancingo; cualquier rezago aquí es una pérdida crítica para el 2025."</p>
-                    <p class="text-[9px] uppercase tracking-[0.5em] text-slate-500">Acción Requerida: Homologación de cuotas por vendedor y zona</p>
                 </div>
             `;
-            document.getElementById('contenedor-principal').innerHTML = html;
+            document.getElementById('main-content').innerHTML = html;
         }
-        cargar();
+        init();
     </script>
 </body>
 </html>
