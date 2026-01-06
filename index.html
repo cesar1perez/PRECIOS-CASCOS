@@ -3,50 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPORTE ESTRATÉGICO TULANCINGO</title>
+    <title>REPORTE CRÍTICO TULANCINGO 2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=JetBrains+Mono:wght@400;800&display=swap" rel="stylesheet">
     <style>
-        :root { --peligro: #dc2626; --texto: #1e293b; --fondo: #f1f5f9; }
-        body { background: var(--fondo); font-family: 'Inter', sans-serif; color: var(--texto); padding-bottom: 50px; }
+        :root { --peligro: #ef4444; --advertencia: #f59e0b; --primario: #001529; }
+        body { background: #070707; font-family: 'JetBrains Mono', monospace; color: white; padding-bottom: 50px; }
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        
-        .tarjeta-blanca { 
-            background: #ffffff; 
-            border: 1px solid #e2e8f0; 
-            border-radius: 1rem; 
-            padding: 1.5rem; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        .tarjeta-alerta { 
+            background: rgba(239, 68, 68, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 1.5rem; 
+            padding: 2rem; 
             transition: all 0.3s ease; 
         }
-        .tarjeta-blanca:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        
         .tarjeta-critica {
-            border-left: 5px solid var(--peligro);
+            border-left: 4px solid var(--peligro);
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%);
         }
-        
-        .texto-alerta { color: var(--peligro); font-weight: 800; }
-        .badge-rojo { background: #fee2e2; color: #b91c1c; font-size: 9px; padding: 2px 8px; border-radius: 9999px; font-weight: 800; border: 1px solid #fecaca; }
-        
-        .linea-separadora { border-bottom: 1px solid #f1f5f9; padding-bottom: 0.5rem; margin-bottom: 0.5rem; }
+        .texto-peligro { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+        .badge-rojo { background: #ef4444; color: white; font-size: 8px; padding: 2px 5px; border-radius: 3px; font-weight: 900; }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
     <header class="text-center mb-12">
-        <div class="inline-block bg-white border border-slate-200 text-slate-500 text-[10px] px-6 py-1 rounded-full font-bold mb-4 uppercase tracking-[0.2em] shadow-sm">Auditoría de Ventas 2025</div>
-        <h1 class="font-orbitron text-4xl md:text-5xl text-slate-800 mb-2 uppercase italic tracking-tighter">ANÁLISIS DE <span class="text-red-600">RIESGOS</span></h1>
-        <p class="text-slate-500 tracking-wide text-xs font-semibold italic uppercase">Onesimo, Miguel, Ruben, CS Rio, CS Mayoreo, Tizayuca, Sahagun</p>
+        <div class="inline-block border border-red-600 text-red-600 text-[10px] px-4 py-1 rounded-full font-black mb-4 uppercase tracking-[0.3em]">Auditoría de Ventas 2025</div>
+        <h1 class="font-orbitron text-4xl md:text-5xl italic texto-peligro mb-2 uppercase">FOCOS ROJOS: EQUIPO CLAVE</h1>
+        <p class="text-slate-500 tracking-[0.2em] text-[10px] font-bold uppercase italic">Análisis exclusivo: Onesimo, Miguel, Ruben, CS Rio, CS Mayoreo, Tizayuca, Sahagun</p>
     </header>
 
-    <div id="contenedor-principal" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div id="contenedor-principal" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         </div>
 
     <script>
         const URL_DATOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRA2Ijt1TI5_APzSJNjdlGF1_Jex0-n3iTiy8R996VR6PNx6V7tM8xO8u3sFKwp2A/pub?gid=1217270027&single=true&output=csv';
-        const VENDEDORES_OBJETIVO = ["ONESIMO", "MIGUEL", "RUBEN", "CS RIO MAYOREO", "CS MAYOREO", "TIZAYUCA (CELENE)", "CS CD SAHAGUN MAYOREO"];
+        
+        // Filtro estricto de vendedores solicitados
+        const VENDEDORES_OBJETIVO = [
+            "ONESIMO", "MIGUEL", "RUBEN", 
+            "CS RIO MAYOREO", "CS MAYOREO", 
+            "TIZAYUCA (CELENE)", "CS CD SAHAGUN MAYOREO"
+        ];
 
         async function cargar() {
             const res = await fetch(URL_DATOS + '&t=' + Date.now());
@@ -54,7 +54,7 @@
             Papa.parse(texto, { header: true, complete: (res) => {
                 const datosFiltrados = res.data.filter(r => 
                     r.AÑO == "2025" && 
-                    VENDEDORES_OBJETIVO.includes(r.VENDEDOR?.toUpperCase().trim())
+                    VENDEDORES_OBJETIVO.includes(r.VENDEDOR.toUpperCase().trim())
                 );
                 procesar(datosFiltrados);
             }});
@@ -67,8 +67,8 @@
             const rank = (campo, valor, reverse = false) => {
                 const obj = {};
                 datos.forEach(r => {
-                    const key = r[campo]?.toUpperCase().trim();
-                    if(key) obj[key] = (obj[key] || 0) + n(r[valor]);
+                    const key = r[campo].toUpperCase().trim();
+                    obj[key] = (obj[key] || 0) + n(r[valor]);
                 });
                 return Object.entries(obj).sort((a,b) => reverse ? b[1] - a[1] : a[1] - b[1]);
             };
@@ -76,86 +76,85 @@
             const vtasBajas = rank('VENDEDOR', 'IMPORTE NETO');
             const mesesBajos = rank('MES', 'IMPORTE NETO');
             const zonasDebiles = rank('ZONA', 'IMPORTE NETO');
+            
+            // Rezagos por producto
             const rezagoLub = rank('VENDEDOR', 'REAL LUBRICANTES').slice(0, 4);
             const rezagoFilt = rank('VENDEDOR', 'REAL FILTROS').slice(0, 4);
             const rezagoMoto = rank('VENDEDOR', 'REAL MOTOBATERIAS').slice(0, 4);
 
             const html = `
-                <div class="tarjeta-blanca tarjeta-critica">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-bold uppercase text-xs text-slate-400 tracking-wider italic">Rezago en Facturación</h3>
-                        <i class="fas fa-chart-line-down text-red-500"></i>
-                    </div>
-                    <div class="space-y-3">
+                <div class="tarjeta-alerta tarjeta-critica">
+                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm flex justify-between">Rezago en Facturación <i class="fas fa-chart-line-down"></i></h3>
+                    <div class="space-y-4">
                         ${vtasBajas.map((v, i) => `
-                            <div class="flex justify-between items-center linea-separadora">
-                                <span class="text-xs font-bold text-slate-700">${v[0]}</span>
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                                <span class="text-[11px] font-bold">${v[0]}</span>
                                 <div class="text-right">
-                                    <span class="block text-sm font-black text-red-600">$${f(v[1])}</span>
-                                    ${i < 2 ? '<span class="badge-rojo uppercase">Crítico</span>' : ''}
+                                    <span class="block text-xs font-black text-red-400">$${f(v[1])}</span>
+                                    ${i < 2 ? '<span class="badge-rojo">BAJO NIVEL</span>' : ''}
                                 </div>
                             </div>
                         `).join('')}
                     </div>
                 </div>
 
-                <div class="tarjeta-blanca">
-                    <h3 class="font-bold uppercase text-xs text-slate-400 tracking-wider mb-6 italic">Meses de Menor Impacto</h3>
+                <div class="tarjeta-alerta">
+                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm">Meses de Menor Impacto</h3>
                     <div class="space-y-4">
                         ${mesesBajos.slice(0, 4).map(m => `
-                            <div class="flex justify-between items-center linea-separadora">
-                                <span class="text-xs uppercase font-medium text-slate-600">${m[0]}</span>
-                                <span class="font-extrabold text-red-500">$${f(m[1])}</span>
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2 text-xs">
+                                <span class="uppercase">${m[0]}</span>
+                                <span class="font-black text-red-400">$${f(m[1])}</span>
                             </div>
                         `).join('')}
                     </div>
-                    <p class="text-[10px] text-slate-400 mt-4 italic italic">Alertas detectadas en la operación mensual.</p>
+                    <p class="text-[9px] text-slate-500 mt-6 italic">Meses donde el equipo de mayoreo presentó debilidad operativa.</p>
                 </div>
 
-                <div class="tarjeta-blanca">
-                    <h3 class="font-bold uppercase text-xs text-slate-400 tracking-wider mb-6 italic">Zonas Desatendidas</h3>
+                <div class="tarjeta-alerta">
+                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm">Zonas Desatendidas</h3>
                     <div class="space-y-4">
                         ${zonasDebiles.slice(0, 4).map(z => `
-                            <div class="flex justify-between items-center linea-separadora">
-                                <span class="text-xs uppercase font-bold text-slate-500">${z[0]}</span>
-                                <span class="font-black text-slate-800">$${f(z[1])}</span>
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2 text-xs">
+                                <span class="uppercase font-bold text-slate-300">${z[0]}</span>
+                                <span class="font-black text-white">$${f(z[1])}</span>
                             </div>
                         `).join('')}
                     </div>
                 </div>
 
-                <div class="tarjeta-blanca lg:col-span-2">
-                    <h3 class="font-bold uppercase text-xs text-red-600 mb-6 border-b pb-4 flex justify-between items-center italic">
-                        REFRACCIONAMIENTO MÍNIMO <span class="bg-red-50 text-[9px] px-3 py-1 rounded">PIEZAS REALES</span>
+                <div class="tarjeta-alerta lg:col-span-2">
+                    <h3 class="font-black uppercase italic mb-8 text-red-500 border-b border-red-900/30 pb-4 flex justify-between">
+                        Falta de Enfoque en Líneas Secundarias <span class="text-[10px] bg-red-600/20 px-2 py-1 rounded text-red-400">PIEZAS REALES</span>
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <p class="text-[9px] text-orange-600 font-bold uppercase mb-4 tracking-widest italic border-l-2 border-orange-500 pl-2">Lubricantes</p>
-                            ${rezagoLub.map(p => `<div class="flex justify-between text-xs mb-2 text-slate-500"><span>${p[0]}</span><b class="text-slate-900">${p[1]} pz</b></div>`).join('')}
+                            <p class="text-[10px] text-orange-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-orange-400 pl-2">Mínimo Lubricantes</p>
+                            ${rezagoLub.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
                         </div>
                         <div>
-                            <p class="text-[9px] text-emerald-600 font-bold uppercase mb-4 tracking-widest italic border-l-2 border-emerald-500 pl-2">Filtros</p>
-                            ${rezagoFilt.map(p => `<div class="flex justify-between text-xs mb-2 text-slate-500"><span>${p[0]}</span><b class="text-slate-900">${p[1]} pz</b></div>`).join('')}
+                            <p class="text-[10px] text-green-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-green-400 pl-2">Mínimo Filtros</p>
+                            ${rezagoFilt.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
                         </div>
                         <div>
-                            <p class="text-[9px] text-blue-600 font-bold uppercase mb-4 tracking-widest italic border-l-2 border-blue-500 pl-2">Motobaterías</p>
-                            ${rezagoMoto.map(p => `<div class="flex justify-between text-xs mb-2 text-slate-500"><span>${p[0]}</span><b class="text-slate-900">${p[1]} pz</b></div>`).join('')}
+                            <p class="text-[10px] text-blue-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-blue-400 pl-2">Mínimo Motos</p>
+                            ${rezagoMoto.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
                         </div>
                     </div>
                 </div>
 
-                <div class="tarjeta-blanca bg-slate-50 border-slate-200">
-                    <h3 class="font-bold uppercase text-xs text-slate-800 mb-4 italic">Observaciones de Junta</h3>
-                    <div class="text-[11px] space-y-4 text-slate-500 leading-relaxed">
-                        <p><b class="text-slate-900">● Inconsistencia:</b> Los centros de servicio (CS) muestran caídas atípicas en <b>${mesesBajos[0][0]}</b>.</p>
-                        <p><b class="text-slate-900">● Abandono:</b> El vendedor <b>${rezagoLub[0][0]}</b> registra el nivel más bajo de lubricantes del grupo.</p>
-                        <p><b class="text-slate-900">● Riesgo Logístico:</b> Sahagún y Tizayuca presentan una penetración de filtros menor al 15% de su potencial.</p>
+                <div class="tarjeta-alerta border-red-500/30">
+                    <h3 class="font-black uppercase italic mb-4 text-red-500 text-sm italic">Observaciones de Junta</h3>
+                    <div class="text-[10px] space-y-4 text-slate-400">
+                        <p><b class="text-white">● Inconsistencia en Mayoreo:</b> Los centros de servicio (CS) muestran una fluctuación alarmante en meses como <b>${mesesBajos[0][0]}</b>.</p>
+                        <p><b class="text-white">● Abandono de Línea:</b> Vendedores como <b>${rezagoLub[0][0]}</b> presentan nulo desplazamiento en lubricantes, perdiendo rentabilidad.</p>
+                        <p><b class="text-white">● Riesgo Tizayuca/Sahagún:</b> La dispersión geográfica está afectando los números de filtros comparado con el potencial de la zona.</p>
                     </div>
                 </div>
 
-                <div class="tarjeta-blanca lg:col-span-3 border-2 border-dashed border-slate-300 text-center bg-white/50">
-                    <p class="text-xl italic text-slate-800 font-extrabold mb-2 tracking-tighter">"Cualquier rezago en el equipo de Mayoreo es una pérdida crítica de rentabilidad."</p>
-                    <p class="text-[10px] uppercase tracking-[0.4em] text-slate-400 font-bold">Dirección Comercial • Llanterama Tulancingo 2025</p>
+                <div class="tarjeta-alerta lg:col-span-3 border-dashed border-red-500/50 text-center">
+                    <p class="text-lg italic text-red-400 font-bold mb-2">"El equipo de Mayoreo y Centros de Servicio es el motor de Tulancingo; cualquier rezago aquí es una pérdida crítica para el 2025."</p>
+                    <p class="text-[9px] uppercase tracking-[0.5em] text-slate-500">Acción Requerida: Homologación de cuotas por vendedor y zona</p>
                 </div>
             `;
             document.getElementById('contenedor-principal').innerHTML = html;
