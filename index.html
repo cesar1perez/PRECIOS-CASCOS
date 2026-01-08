@@ -2,164 +2,182 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPORTE CRÍTICO TULANCINGO 2025</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dashboard Llanterama - Tulancingo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=JetBrains+Mono:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --peligro: #ef4444; --advertencia: #f59e0b; --primario: #001529; }
-        body { background: #070707; font-family: 'JetBrains Mono', monospace; color: white; padding-bottom: 50px; }
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        .tarjeta-alerta { 
-            background: rgba(239, 68, 68, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: 1.5rem; 
-            padding: 2rem; 
-            transition: all 0.3s ease; 
-        }
-        .tarjeta-critica {
-            border-left: 4px solid var(--peligro);
-            background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%);
-        }
-        .texto-peligro { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
-        .badge-rojo { background: #ef4444; color: white; font-size: 8px; padding: 2px 5px; border-radius: 3px; font-weight: 900; }
+        :root { --navy-deep: #0f172a; --blue-accent: #2563eb; --gold-accent: #f59e0b; }
+        body { background-color: #f1f5f9; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; margin: 0; }
+        h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
+        
+        .card-vendedor { background: white; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-top: 5px solid var(--navy-deep); margin-bottom: 1.5rem; overflow: hidden; }
+        
+        .barra-bg { background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden; }
+        .barra-fill { height: 100%; transition: width 1s ease-in-out; }
+
+        .metric-container { display: flex; background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
+        .metric-pct { background: var(--blue-accent); color: white; width: 42%; padding: 8px; text-align: center; }
+        .metric-cash { background: var(--navy-deep); color: var(--gold-accent); width: 58%; padding: 8px; text-align: center; }
+
+        .detalles-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease; }
+        .abierto .detalles-wrapper { grid-template-rows: 1fr; }
+        .detalles-inner { overflow: hidden; }
+        .flecha-btn { transition: transform 0.3s ease; }
+        .abierto .flecha-btn { transform: rotate(180deg); }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body>
 
-    <header class="text-center mb-12">
-        <div class="inline-block border border-red-600 text-red-600 text-[10px] px-4 py-1 rounded-full font-black mb-4 uppercase tracking-[0.3em]">Auditoría de Ventas 2025</div>
-        <h1 class="font-orbitron text-4xl md:text-5xl italic texto-peligro mb-2 uppercase">FOCOS ROJOS: EQUIPO CLAVE</h1>
-        <p class="text-slate-500 tracking-[0.2em] text-[10px] font-bold uppercase italic">Análisis exclusivo: Onesimo, Miguel, Ruben, CS Rio, CS Mayoreo, Tizayuca, Sahagun</p>
+    <header class="bg-slate-900 text-white py-6 px-4 shadow-lg border-b-4 border-blue-600 sticky top-0 z-50 text-center">
+        <h1 class="text-xl font-black uppercase tracking-tighter">Llanterama <span class="text-blue-400">Tulancingo</span></h1>
+        <p class="text-[10px] font-bold text-blue-200 uppercase tracking-[0.2em] mt-1">Estrategia Comercial Trimestral</p>
     </header>
 
-    <div id="contenedor-principal" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section class="container mx-auto px-4 mt-6 max-w-5xl">
+        <div class="bg-yellow-50 border-2 border-yellow-400 border-l-[10px] border-l-slate-900 p-4 rounded-xl shadow-sm">
+            <div class="flex items-start gap-3 text-sm font-bold text-slate-800 leading-tight">
+                <i class="fas fa-exclamation-circle text-yellow-600 mt-1 text-lg"></i>
+                <div>
+                    <p class="uppercase text-[10px] tracking-widest text-slate-500 mb-1 font-black">Aviso de Cumplimiento</p>
+                    Para activar el pago de bonos, es <span class="text-red-700 underline font-black">indispensable el cumplimiento del 100%</span> en la línea de motos.
+                </div>
+            </div>
         </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-8 max-w-5xl">
+        <div id="grid-vendedores">
+            <div class="text-center py-20 text-slate-400 font-bold uppercase tracking-widest">
+                <i class="fas fa-spinner fa-spin mr-2"></i> Cargando Estrategia Tulancingo...
+            </div>
+        </div>
+    </main>
 
     <script>
-        const URL_DATOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRA2Ijt1TI5_APzSJNjdlGF1_Jex0-n3iTiy8R996VR6PNx6V7tM8xO8u3sFKwp2A/pub?gid=1217270027&single=true&output=csv';
-        
-        // Filtro estricto de vendedores solicitados
-        const VENDEDORES_OBJETIVO = [
-            "ONESIMO", "MIGUEL", "RUBEN", 
-            "CS RIO MAYOREO", "CS MAYOREO", 
-            "TIZAYUCA (CELENE)", "CS CD SAHAGUN MAYOREO"
-        ];
+        // URL de Tulancingo con cache-bust
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTaU2EOJQU2nQ56NwMSDAIVaAkFykM_oesKx3ZnRxZDkLjXpL10HpcNmNbrX7ZDOq4X8RendztUPQvB/pub?gid=1559244084&single=true&output=csv&v=' + Date.now();
 
-        async function cargar() {
-            const res = await fetch(URL_DATOS + '&t=' + Date.now());
-            const texto = await res.text();
-            Papa.parse(texto, { header: true, complete: (res) => {
-                const datosFiltrados = res.data.filter(r => 
-                    r.AÑO == "2025" && 
-                    VENDEDORES_OBJETIVO.includes(r.VENDEDOR.toUpperCase().trim())
-                );
-                procesar(datosFiltrados);
-            }});
+        function init() {
+            Papa.parse(CSV_URL, {
+                download: true, header: true, skipEmptyLines: true,
+                complete: (results) => render(results.data)
+            });
         }
 
-        function procesar(datos) {
-            const n = (v) => parseFloat(String(v || "0").replace(/[^0-9.-]+/g,"")) || 0;
-            const f = (v) => Math.round(v).toLocaleString('es-MX');
+        function cleanNum(val) {
+            if (!val) return 0;
+            const str = String(val).replace(/[$,% ]/g, '');
+            const num = parseFloat(str);
+            return isNaN(num) ? 0 : num;
+        }
 
-            const rank = (campo, valor, reverse = false) => {
-                const obj = {};
-                datos.forEach(r => {
-                    const key = r[campo].toUpperCase().trim();
-                    obj[key] = (obj[key] || 0) + n(r[valor]);
-                });
-                return Object.entries(obj).sort((a,b) => reverse ? b[1] - a[1] : a[1] - b[1]);
-            };
+        function calcularProgreso(real, obj) {
+            const r = cleanNum(real);
+            const o = cleanNum(obj);
+            if (o <= 0) return 0;
+            return ((r / o) * 100).toFixed(2); 
+        }
 
-            const vtasBajas = rank('VENDEDOR', 'IMPORTE NETO');
-            const mesesBajos = rank('MES', 'IMPORTE NETO');
-            const zonasDebiles = rank('ZONA', 'IMPORTE NETO');
-            
-            // Rezagos por producto
-            const rezagoLub = rank('VENDEDOR', 'REAL LUBRICANTES').slice(0, 4);
-            const rezagoFilt = rank('VENDEDOR', 'REAL FILTROS').slice(0, 4);
-            const rezagoMoto = rank('VENDEDOR', 'REAL MOTOBATERIAS').slice(0, 4);
+        function formatCant(val) { return cleanNum(val).toLocaleString(); }
+        function formatMoney(val) { return '$' + cleanNum(val).toLocaleString(); }
+        function toggleVendedor(index) { document.getElementById(`card-${index}`).classList.toggle('abierto'); }
 
-            const html = `
-                <div class="tarjeta-alerta tarjeta-critica">
-                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm flex justify-between">Rezago en Facturación <i class="fas fa-chart-line-down"></i></h3>
-                    <div class="space-y-4">
-                        ${vtasBajas.map((v, i) => `
-                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
-                                <span class="text-[11px] font-bold">${v[0]}</span>
-                                <div class="text-right">
-                                    <span class="block text-xs font-black text-red-400">$${f(v[1])}</span>
-                                    ${i < 2 ? '<span class="badge-rojo">BAJO NIVEL</span>' : ''}
+        function render(rows) {
+            const container = document.getElementById('grid-vendedores');
+            container.innerHTML = '';
+
+            rows.forEach((row, index) => {
+                if (!row.VENDEDOR || row.VENDEDOR.trim() === "" || row.VENDEDOR.includes("TOTAL")) return;
+                
+                const nombreDisplay = row.VENDEDOR.trim();
+
+                const card = document.createElement('div');
+                card.id = `card-${index}`;
+                card.className = 'card-vendedor';
+
+                card.innerHTML = `
+                    <div class="p-5 flex justify-between items-center gap-2 cursor-pointer" onclick="toggleVendedor(${index})">
+                        <div class="flex items-center gap-3">
+                            <div class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center flecha-btn shadow-inner border border-slate-200">
+                                <i class="fas fa-chevron-down text-slate-500 text-sm"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-black text-slate-900 leading-none uppercase tracking-tighter">${nombreDisplay}</h2>
+                                <p class="text-[9px] font-bold text-blue-600 uppercase mt-1 tracking-widest">${row.ZONA || 'ZONA TULANCINGO'}</p>
+                            </div>
+                        </div>
+                        <div class="bg-green-600 text-white px-4 py-2 rounded-xl text-right shadow-md border-b-4 border-green-800">
+                            <p class="text-[8px] font-bold uppercase opacity-80 leading-none">Total a ganar</p>
+                            <p class="text-lg font-black mt-1 leading-none">${formatMoney(row["TOTAL A GANAR"])}</p>
+                        </div>
+                    </div>
+
+                    <div class="detalles-wrapper">
+                        <div class="detalles-inner px-5 pb-6 bg-slate-50 border-t">
+                            <div class="pt-6 space-y-8 max-w-3xl mx-auto">
+                                
+                                ${crearFila("Línea Motos", row["OBJ MOTO"], row["REAL MOTO"], row["GANANCIA MOTO"], "bg-blue-600")}
+                                
+                                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex justify-between items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-slate-100 h-12 w-12 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-user-plus text-blue-600 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-black text-slate-400 uppercase leading-none mb-1">Clientes Nuevos</p>
+                                            <p class="text-2xl font-black text-slate-900 leading-none">${row["ACUM CLIENTES NVO"] || 0}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right border-l pl-4 font-bold">
+                                        <p class="text-[9px] font-bold text-slate-400 uppercase mb-1">Ganancia Clientes</p>
+                                        <p class="text-lg font-black text-green-600 leading-none">${formatMoney(row["GANANCIA ACUM CLTE NVO"])}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
 
-                <div class="tarjeta-alerta">
-                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm">Meses de Menor Impacto</h3>
-                    <div class="space-y-4">
-                        ${mesesBajos.slice(0, 4).map(m => `
-                            <div class="flex justify-between items-center border-b border-white/5 pb-2 text-xs">
-                                <span class="uppercase">${m[0]}</span>
-                                <span class="font-black text-red-400">$${f(m[1])}</span>
+                                <p class="text-[9px] text-center text-slate-400 uppercase font-bold tracking-widest">Estrategia Trimestral: ${row["TRIMESTRE"] || ''}</p>
                             </div>
-                        `).join('')}
-                    </div>
-                    <p class="text-[9px] text-slate-500 mt-6 italic">Meses donde el equipo de mayoreo presentó debilidad operativa.</p>
-                </div>
-
-                <div class="tarjeta-alerta">
-                    <h3 class="font-black uppercase italic mb-6 text-red-500 text-sm">Zonas Desatendidas</h3>
-                    <div class="space-y-4">
-                        ${zonasDebiles.slice(0, 4).map(z => `
-                            <div class="flex justify-between items-center border-b border-white/5 pb-2 text-xs">
-                                <span class="uppercase font-bold text-slate-300">${z[0]}</span>
-                                <span class="font-black text-white">$${f(z[1])}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div class="tarjeta-alerta lg:col-span-2">
-                    <h3 class="font-black uppercase italic mb-8 text-red-500 border-b border-red-900/30 pb-4 flex justify-between">
-                        Falta de Enfoque en Líneas Secundarias <span class="text-[10px] bg-red-600/20 px-2 py-1 rounded text-red-400">PIEZAS REALES</span>
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-[10px] text-orange-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-orange-400 pl-2">Mínimo Lubricantes</p>
-                            ${rezagoLub.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-green-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-green-400 pl-2">Mínimo Filtros</p>
-                            ${rezagoFilt.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-blue-400 font-bold uppercase mb-4 tracking-widest border-l-2 border-blue-400 pl-2">Mínimo Motos</p>
-                            ${rezagoMoto.map(p => `<div class="flex justify-between text-[11px] mb-2 opacity-80 italic"><span>${p[0]}</span><b>${p[1]} pz</b></div>`).join('')}
                         </div>
                     </div>
-                </div>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-                <div class="tarjeta-alerta border-red-500/30">
-                    <h3 class="font-black uppercase italic mb-4 text-red-500 text-sm italic">Observaciones de Junta</h3>
-                    <div class="text-[10px] space-y-4 text-slate-400">
-                        <p><b class="text-white">● Inconsistencia en Mayoreo:</b> Los centros de servicio (CS) muestran una fluctuación alarmante en meses como <b>${mesesBajos[0][0]}</b>.</p>
-                        <p><b class="text-white">● Abandono de Línea:</b> Vendedores como <b>${rezagoLub[0][0]}</b> presentan nulo desplazamiento en lubricantes, perdiendo rentabilidad.</p>
-                        <p><b class="text-white">● Riesgo Tizayuca/Sahagún:</b> La dispersión geográfica está afectando los números de filtros comparado con el potencial de la zona.</p>
+        function crearFila(titulo, obj, real, ganancia, colorBarra) {
+            const p = calcularProgreso(real, obj);
+            const esMeta = parseFloat(p) >= 100;
+            return `
+                <div class="space-y-3">
+                    <h3 class="text-xs font-black text-slate-800 uppercase border-l-4 border-slate-900 pl-2 tracking-tighter">${titulo}</h3>
+                    <div class="grid grid-cols-2 gap-3 bg-white p-3 rounded-xl border border-slate-100 shadow-sm font-bold">
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase leading-none mb-1 text-left">Objetivo</p>
+                            <p class="text-sm text-slate-500 text-left">${formatCant(obj)}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase leading-none mb-1">Real Vendido</p>
+                            <p class="text-lg text-slate-900 leading-none">${formatCant(real)}</p>
+                        </div>
                     </div>
-                </div>
-
-                <div class="tarjeta-alerta lg:col-span-3 border-dashed border-red-500/50 text-center">
-                    <p class="text-lg italic text-red-400 font-bold mb-2">"El equipo de Mayoreo y Centros de Servicio es el motor de Tulancingo; cualquier rezago aquí es una pérdida crítica para el 2025."</p>
-                    <p class="text-[9px] uppercase tracking-[0.5em] text-slate-500">Acción Requerida: Homologación de cuotas por vendedor y zona</p>
+                    <div class="barra-bg"><div class="barra-fill ${esMeta ? 'bg-green-500' : colorBarra}" style="width: ${Math.min(parseFloat(p), 100)}%"></div></div>
+                    <div class="metric-container shadow-sm">
+                        <div class="metric-pct">
+                            <p class="text-[8px] uppercase font-bold opacity-80 leading-none mb-1 text-white">Logro</p>
+                            <p class="text-lg font-black">${p}%</p>
+                        </div>
+                        <div class="metric-cash">
+                            <p class="text-[8px] uppercase font-bold opacity-80 leading-none mb-1">Ganancia Línea</p>
+                            <p class="text-lg font-black">${formatMoney(ganancia)}</p>
+                        </div>
+                    </div>
                 </div>
             `;
-            document.getElementById('contenedor-principal').innerHTML = html;
         }
-        cargar();
+
+        window.onload = init;
     </script>
 </body>
 </html>
